@@ -1,7 +1,7 @@
 FROM grams/ubuntu-base
 
 # Create Jenkins user
-RUN useradd -m -d /home/jenkins -p $(perl -e 'print crypt("jenkins", "jenkins"),"\n"') -s /bin/bash -U jenkins
+RUN useradd -m -d /home/jenkins -u 18001 -p $(perl -e 'print crypt("jenkins", "jenkins"),"\n"') -s /bin/bash -U jenkins
 
 # Install Jenkins slave
 RUN mkdir -p /home/jenkins/slave/workspace
