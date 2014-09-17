@@ -44,7 +44,7 @@ RUN /bin/echo -e "#!/bin/bash\nxvfb-run firefox\n" > /usr/bin/xvfb-run-firefox &
 
 ## Asciidoc
 RUN apt-get update && apt-get install -y asciidoc source-highlight graphviz && apt-get clean
-RUN sudo -u jenkins -i /bin/bash -c "curl https://asciidoc-plantuml.googlecode.com/files/plantuml.zip asciidoc > plantuml.zip ; asciidoc --filter install plantuml.zip ; rm -f plantuml.zip ; curl http://freefr.dl.sourceforge.net/project/plantuml/plantuml.jar >  ~/.asciidoc/filters/plantuml/plantuml.jar"
+RUN sudo -u jenkins -i /bin/bash -c "mkdir -p ~/.asciidoc/filters/plantuml ; cd ~/.asciidoc/filters/plantuml ; curl https://guillaume-plantuml-updates.googlecode.com/archive/f6dba6e5eab399c69514f4b5dc65c3615f8aa28a.zip > plantuml.zip ; unzip -j plantuml.zip \"*/source/*\" ; rm -f plantuml.zip"
 
 ## Ruby with rbenv
 # Before installing Ruby, you’ll want to make sure you have a sane build environment. The following list of packages comes from
