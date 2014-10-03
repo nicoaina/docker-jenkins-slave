@@ -20,14 +20,18 @@ CMD ["sudo", "-i", "-u", "jenkins", "java", "-jar", "/home/jenkins/slave/slave.j
 ## Sun/Oracle Java 6 JDK
 # to skip the license screen:
 RUN /bin/echo -e "debconf shared/accepted-oracle-license-v1-1 select true\ndebconf shared/accepted-oracle-license-v1-1 seen true"| /usr/bin/debconf-set-selections
-RUN add-apt-repository ppa:webupd8team/java && apt-get update
-RUN apt-get update && apt-get install -y oracle-java6-installer && apt-get clean
+RUN add-apt-repository ppa:webupd8team/java && apt-get update && apt-get install -y oracle-java6-installer && apt-get clean
 
 # Keep Java7 as default jdk
 RUN update-java-alternatives -s java-1.7.0-openjdk-amd64
 
 ## Dart SDK
-RUN curl "http://storage.googleapis.com/dart-archive/channels/stable/release/latest/sdk/dartsdk-linux-x64-release.zip" > dartsdk.zip && unzip -q dartsdk.zip && rm -f dartsdk.zip && chmod -R a+r dart-sdk && find dart-sdk -type d -exec chmod 755 {} \; && chmod -R a+x dart-sdk/bin && cp -R dart-sdk /usr/lib/dart-sdk && rm -rf dart-sdk
+# https://www.dartlang.org/tools/debian.html#download-debian-package
+# Get the Google Linux package signing key.
+RUN curl https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+# Set up the location of the stable repository.
+RUN curl https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list
+RUN apt-get update && apt-get install dart && apt-get clean
 
 ## Android SDK
 RUN curl "http://dl.google.com/android/android-sdk_r22.6.1-linux.tgz" | tar xz && mv android-sdk-linux /usr/lib/android-sdk
