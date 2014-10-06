@@ -32,6 +32,8 @@ RUN curl https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
 # Set up the location of the stable repository.
 RUN curl https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list
 RUN apt-get update && apt-get install dart && apt-get clean
+# Workaround https://github.com/dart-lang/bleeding_edge/blob/master/dart/pkg/code_transformers/lib/src/dart_sdk.dart#L22
+RUN /bin/echo -e "# add Dart SDK binaries to the path\nPATH=/usr/lib/dart/bin:$PATH" > /etc/profile.d/dart-path.sh
 
 ## Android SDK
 RUN curl "http://dl.google.com/android/android-sdk_r23.0.2-linux.tgz" | tar xz && mv android-sdk-linux /usr/lib/android-sdk
