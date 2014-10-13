@@ -25,16 +25,19 @@ RUN add-apt-repository ppa:webupd8team/java && apt-get update && apt-get install
 # Keep Java7 as default jdk
 RUN update-java-alternatives -s java-1.7.0-openjdk-amd64
 
-## Dart SDK
+## Dart SDK : simplest way
+RUN curl "http://storage.googleapis.com/dart-archive/channels/stable/release/latest/sdk/dartsdk-linux-x64-release.zip" > dartsdk.zip && unzip -q dartsdk.zip && rm -f dartsdk.zip && chmod -R a+r dart-sdk && find dart-sdk -type d -exec chmod 755 {} \; && chmod -R a+x dart-sdk/bin && cp -R dart-sdk /usr/lib/dart-sdk && rm -rf dart-sdk
+
+## Dart SDK : future clean way apt-get style
 # https://www.dartlang.org/tools/debian.html#download-debian-package
 # Get the Google Linux package signing key.
-RUN curl https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+###RUN curl https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
 # Set up the location of the stable repository.
-RUN curl https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list
-RUN apt-get update && apt-get install dart && apt-get clean
+###RUN curl https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list
+###RUN apt-get update && apt-get install dart && apt-get clean
 # Workaround https://github.com/dart-lang/bleeding_edge/blob/master/dart/pkg/code_transformers/lib/src/dart_sdk.dart#L22
-RUN ln -s /usr/lib/dart /usr/lib/dart-sdk
-RUN /bin/echo -e "# add Dart SDK binaries to the path\nPATH=/usr/lib/dart-sdk/bin:$PATH" > /etc/profile.d/dart-path.sh
+###RUN ln -s /usr/lib/dart /usr/lib/dart-sdk
+###RUN /bin/echo -e "# add Dart SDK binaries to the path\nPATH=/usr/lib/dart-sdk/bin:$PATH" > /etc/profile.d/dart-path.sh
 
 ## Android SDK
 RUN curl "http://dl.google.com/android/android-sdk_r23.0.2-linux.tgz" | tar xz && mv android-sdk-linux /usr/lib/android-sdk
