@@ -2,6 +2,8 @@ FROM grams/ubuntu-base
 
 # Create Jenkins user
 RUN useradd -m -d /home/jenkins -u 18001 -p $(perl -e 'print crypt("jenkins", "jenkins"),"\n"') -s /bin/bash -U jenkins
+# Allow jenkins to start supervisord (in jobs that require Xvfb)
+RUN /bin/echo -e "jenkins ALL=(root) NOPASSWD: /usr/sbin/service supervisor start"> /etc/sudoers.d/jenkins && chmod 0440 /etc/sudoers.d/jenkins
 
 # Install Jenkins slave
 RUN mkdir -p /home/jenkins/slave/workspace
