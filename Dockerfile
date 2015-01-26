@@ -46,6 +46,7 @@ RUN curl "http://dl.google.com/android/android-sdk_r23.0.2-linux.tgz" | tar xz &
 # Update Android SDK
 # Answering yes trick found here http://stackoverflow.com/a/21910110/1472121
 RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | /usr/lib/android-sdk/tools/android update sdk --no-ui --filter platform-tools,android-17,build-tools-20.0.0
+RUN chown -R jenkins:jenkins /usr/lib/android-sdk
 
 ## Xvfb and Firefox
 # for Selenium
