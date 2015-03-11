@@ -53,8 +53,6 @@ RUN  sudo -u jenkins -i /bin/bash -c "( sleep 5 && while [ 1 ]; do sleep 1; echo
 # for Selenium
 RUN apt-get update && apt-get install -y xvfb firefox && apt-get clean
 RUN /bin/echo -e "[program:xvfb] \ncommand=Xvfb :99 -screen 0 1600x1200x24 -ac \nautostart=true \nautorestart=true \nredirect_stderr=true" > /etc/supervisor/conf.d/xvfb.conf
-RUN /bin/echo -e "\nexport DISPLAY=:99 \n" >> /etc/profile
-RUN /bin/echo -e "#!/bin/bash\nxvfb-run firefox\n" > /usr/bin/xvfb-run-firefox && chmod 755 /usr/bin/xvfb-run-firefox
 
 ## Asciidoc
 RUN apt-get update && apt-get install -y asciidoc source-highlight graphviz && apt-get clean
