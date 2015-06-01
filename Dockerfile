@@ -51,7 +51,8 @@ RUN  sudo -u jenkins -i /bin/bash -c "( sleep 5 && while [ 1 ]; do sleep 1; echo
 
 ## Xvfb and Firefox
 # for Selenium
-RUN apt-get update && apt-get install -y xvfb firefox && apt-get clean
+RUN curl "http://security.ubuntu.com/ubuntu/pool/main/f/firefox/firefox_37.0+build2-0ubuntu1_amd64.deb" > firefox.deb ; dpkg -i firefox.deb ; apt-mark hold firefox ; apt-get -y install libstartup-notification0 libxcb-util0 ; apt-get -f --force-yes --yes install ; dpkg -i firefox.deb ; rm firefox.deb
+RUN apt-get update && apt-get install -y xvfb && apt-get clean
 RUN /bin/echo -e "[program:xvfb] \ncommand=Xvfb :99 -screen 0 1600x1200x24 -ac \nautostart=true \nautorestart=true \nredirect_stderr=true" > /etc/supervisor/conf.d/xvfb.conf
 
 ## Asciidoc
