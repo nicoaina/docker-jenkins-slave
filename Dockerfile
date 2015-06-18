@@ -27,6 +27,15 @@ RUN add-apt-repository ppa:webupd8team/java && apt-get update && apt-get install
 # Keep Java7 as default jdk
 RUN update-java-alternatives -s java-1.7.0-openjdk-amd64
 
+# Maven SDKs
+USER jenkins
+RUN mkdir -p /home/jenkins/slave/tools/hudson.tasks.Maven_MavenInstallation/
+WORKDIR /home/jenkins/slave/tools/hudson.tasks.Maven_MavenInstallation/
+RUN curl "http://archive.apache.org/dist/maven/binaries/apache-maven-3.0.4-bin.tar.gz" | tar xz && mv apache-maven-3.0.4 Maven_3.0.4
+RUN curl "http://archive.apache.org/dist/maven/binaries/apache-maven-3.0.5-bin.tar.gz" | tar xz && mv apache-maven-3.0.5 Maven_3.0.5
+USER root
+WORKDIR /
+
 ## Dart SDK : simplest way
 RUN curl "http://storage.googleapis.com/dart-archive/channels/stable/release/latest/sdk/dartsdk-linux-x64-release.zip" > dartsdk.zip && unzip -q dartsdk.zip && rm -f dartsdk.zip && chmod -R a+r dart-sdk && find dart-sdk -type d -exec chmod 755 {} \; && chmod -R a+x dart-sdk/bin && cp -R dart-sdk /usr/lib/dart-sdk && rm -rf dart-sdk
 
