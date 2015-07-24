@@ -16,13 +16,13 @@ CMD ["sudo", "-i", "-u", "jenkins", "java", "-jar", "/home/jenkins/slave/slave.j
 
 ## Jenkins slave features can be freely added or removed by adding or removing sections below
 
-## Java6 SDK
-#RUN apt-get update && apt-get install -y openjdk-6-jdk && apt-get clean
-
 ## Sun/Oracle Java 6 JDK
 # to skip the license screen:
 RUN /bin/echo -e "debconf shared/accepted-oracle-license-v1-1 select true\ndebconf shared/accepted-oracle-license-v1-1 seen true"| /usr/bin/debconf-set-selections
 RUN add-apt-repository ppa:webupd8team/java && apt-get update && apt-get install -y oracle-java6-installer && apt-get clean
+
+## Oracle Java 8 JDK
+RUN add-apt-repository ppa:webupd8team/java && apt-get update && apt-get install -y oracle-java8-installer && apt-get clean
 
 # Keep Java7 as default jdk
 RUN update-java-alternatives -s java-1.7.0-openjdk-amd64
@@ -33,6 +33,7 @@ RUN mkdir -p /home/jenkins/slave/tools/hudson.tasks.Maven_MavenInstallation/
 WORKDIR /home/jenkins/slave/tools/hudson.tasks.Maven_MavenInstallation/
 RUN curl "http://archive.apache.org/dist/maven/binaries/apache-maven-3.0.4-bin.tar.gz" | tar xz && mv apache-maven-3.0.4 Maven_3.0.4
 RUN curl "http://archive.apache.org/dist/maven/binaries/apache-maven-3.0.5-bin.tar.gz" | tar xz && mv apache-maven-3.0.5 Maven_3.0.5
+ADD assets/toolchains.xml /home/jenkins/.m2/toolchains.xml
 USER root
 WORKDIR /
 
