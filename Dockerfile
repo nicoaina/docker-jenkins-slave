@@ -8,7 +8,8 @@ RUN /bin/echo -e "jenkins ALL=(root) NOPASSWD: /usr/sbin/service supervisor star
 # Install Jenkins slave
 RUN mkdir -p /home/jenkins/slave/workspace
 ADD assets/slave.jar /home/jenkins/slave/slave.jar
-RUN chown -R jenkins:jenkins /home/jenkins/slave
+ADD assets/toolchains.xml /home/jenkins/.m2/toolchains.xml
+RUN chown -R jenkins:jenkins /home/jenkins
 
 VOLUME ["/home/jenkins/slave/workspace"]
 
@@ -33,7 +34,6 @@ RUN mkdir -p /home/jenkins/slave/tools/hudson.tasks.Maven_MavenInstallation/
 WORKDIR /home/jenkins/slave/tools/hudson.tasks.Maven_MavenInstallation/
 RUN curl "http://archive.apache.org/dist/maven/binaries/apache-maven-3.0.4-bin.tar.gz" | tar xz && mv apache-maven-3.0.4 Maven_3.0.4
 RUN curl "http://archive.apache.org/dist/maven/binaries/apache-maven-3.0.5-bin.tar.gz" | tar xz && mv apache-maven-3.0.5 Maven_3.0.5
-ADD assets/toolchains.xml /home/jenkins/.m2/toolchains.xml
 USER root
 WORKDIR /
 
