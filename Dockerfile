@@ -65,6 +65,3 @@ RUN sudo -u jenkins -i /bin/bash -c "rbenv install 1.9.3-p484 && rbenv global 1.
 ## Ruby gem asciidoctor
 RUN sudo -u jenkins -i /bin/bash -c "gem install asciidoctor"
 
-## Android SDK
-RUN chown -R jenkins:jenkins /usr/lib/android-sdk
-
