@@ -37,17 +37,16 @@ if arguments['list']:
         names = filter((lambda x: re.match(arguments['<regexp>'], x)), names)
     for name in names:
         print name
-    pass
 
 if arguments['update']:
     matches = filter((lambda x: re.match(arguments['<regexp>'], x[1])), matches)
     ids = ','.join(map((lambda x: x[0]), matches))
     child = pexpect.spawn(android_cmd_path, ['update', 'sdk', '--no-ui', '-a', '--filter', ids],echo=False)
     while True:
-        i = child.expect([pexpect.EOF, 'License id: .*', 'Do you accept the license \'.*\' \[y/n\]:'])
+        i = child.expect([pexpect.EOF, 'License id: .*', 'Do you accept the license \'.*\' \[y/n\]:'],timeout=None)
         if i == 0:
             print child.before
-            break;
+            break
         if i == 1:
             print '-------------------------------\n', child.after
         if i == 2:
