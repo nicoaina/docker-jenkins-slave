@@ -65,7 +65,10 @@ RUN sudo -u jenkins -i /bin/bash -c "rbenv install 1.9.3-p484 && rbenv global 1.
 ## Ruby gem asciidoctor
 RUN sudo -u jenkins -i /bin/bash -c "gem install asciidoctor"
 
-## Android SDK
+## Android SDK installer
 # http://stackoverflow.com/questions/18928164/android-studio-cannot-find-aapt/18930424#18930424
 RUN apt-get update && apt-get install -y lib32stdc++6 lib32z1 && apt-get clean
+RUN easy_install -U pip
+RUN pip install pexpect && pip install docopt
+ADD assets/android_sdk_installer.py /home/jenkins/android_sdk_installer.py
 
